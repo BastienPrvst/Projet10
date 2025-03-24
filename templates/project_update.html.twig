@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+{% block title %}
+    Modifier un projet
+{% endblock %}
+
+{% block body %}
+
+    <main>
+        <header>
+            <div id="current-user"></div>
+            <div id="title-page">
+                <h1>{{ project.name }}</h1>
+            </div>
+        </header>
+        <div id="content">
+            {{ form(form) }}
+        </div>
+    </main>
+
+
+
+{% endblock %}
+
+

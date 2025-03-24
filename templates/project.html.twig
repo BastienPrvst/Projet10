@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+        <main>
+            <header>
+                <div id="current-user"></div>
+                <div id="title-page">
+                    <div class="flex-header">
+                        <h1>{{ project.name }}</h1>
+                        <div class="user-list">
+                            {% for user in projectUser %}
+                            <div class="avatar">{{ user.name|first }}{{ user.surname|first }}</div>
+                            {% endfor %}
+                        </div>
+                        <a class="button" href="{{ path('app_project_update', {name:project.name|slug, id:project.id}) }}">Modifier</a>
+                    </div>
+                </div>
+            </header>
+            <div id="content">
+                <div id="tasks-container">
+
+                {% for key, group in taskGroup %}
+
+                    <div class="task-column">
+                        <h2>{{ key }}</h2>
+
+                        {% for task in group %}
+                        <div class="tasks-list">
+                            <a class="task" href="{{ path('app_update_task', {project:project.id, task:task.id}) }}">
+                                <h3>{{task.title}}</h3>
+
+                                {% if task.description is not null %}
+
+                                <p>{{ task.description }}</p>
+
+                                {% endif %}
+
+                                {% if task.deadline is not null %}
+                                <div class="task-infos">
+                                    <div class="task-deadline">
+                                        <i class="fa-regular fa-calendar"></i>{{ task.deadline }}
+                                    </div>
+                                </div>
+                                {% endif %}
+
+                            </a>
+                            <a href="{{ path('app_create_task', {  id:project.id }) }}" class="task-add">
+                                + Ajouter une tâche
+                            </a>
+                        </div>
+
+
+                        {% endfor %}
+
+                    </div>
+
+                {% endfor %}
+
+                </div>
+            </div>
+        </main>
+
+
+{% endblock %}
+
+

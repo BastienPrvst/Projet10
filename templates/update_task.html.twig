@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+{% block title %}
+    Modifier la tache
+{% endblock %}
+
+{% block body %}
+
+    <main>
+        <header>
+            <div id="current-user"></div>
+            <div id="title-page">
+                <h1>{{task.title}}</h1>
+            </div>
+        </header>
+        <div id="content">
+            {{ form(form) }}
+            <a class="delete-task" href="{{ path('app_delete_task', { project:project.id, task:task.id }) }}">Supprimer la tache</a>
+        </div>
+    </main>
+
+{% endblock %}
+
+
