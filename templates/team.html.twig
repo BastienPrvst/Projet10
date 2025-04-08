@@ -15,7 +15,9 @@
                 <tr>
                     <th>Prénom, Nom</th>
                     <th>Statut</th>
+                    {% if is_granted('ROLE_ADMIN') %}
                     <th>Actions</th>
+                    {% endif %}
                 </tr>
                 </thead>
                 <tbody>
@@ -34,7 +36,8 @@
                                 </div>
                             </div>
                         </td>
-                        <td>{{ user.contract }}</td>
+                        <td>{{ user.contract }} </td>
+                        {% if is_granted('ROLE_ADMIN') %}
                         <td>
                             <a class="button button-edit-team" href="{{ path('app_user', {id:user.id}) }}">
                                 Éditer
@@ -43,6 +46,7 @@
                                 Supprimer
                             </a>
                         </td>
+                        {% endif %}
                     </tr>
 
                 {% endfor %}

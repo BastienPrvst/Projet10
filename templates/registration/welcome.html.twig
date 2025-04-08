@@ -1,0 +1,30 @@
+{% extends 'registration/alt_base.html.twig' %}
+
+{% block body %}
+    <div class="main-container">
+        <h1 class="white white-title">TaskLinker</h1>
+        <div class="container-registration">
+            <h2 class="white bienvenudos">Bienvenue sur TaskLinker</h2>
+
+            <p class="white marg-50">Commencez dès maintenant - gratuitement</p>
+
+            <p class="white">Vous avez déjà un compte ?</p>
+
+            <a class="button button-submit welcome-button" href="{{ path('app_login') }}">Se connecter</a>
+
+            <div class="pouet2">
+                <hr> <span>ou</span> <hr>
+            </div>
+
+
+            <a class="button welcome-button" href="{{ path('app_registration') }}">S'inscrire</a>
+
+        </div>
+
+    </div>
+{% endblock %}
+
+{% block title %}
+
+{% endblock %}
+

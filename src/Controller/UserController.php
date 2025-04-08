@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class UserController extends AbstractController
 {
@@ -19,6 +20,7 @@ class UserController extends AbstractController
     }
 
     #[Route('/user/{id}', name: 'app_user')]
+    #[IsGranted("ROLE_ADMIN")]
     public function showUser(Request $request, User $user): Response
     {
 
@@ -40,6 +42,7 @@ class UserController extends AbstractController
     }
 
     #[Route('/user/{id}/delete', name: 'app_user_delete')]
+    #[IsGranted("ROLE_ADMIN")]
     public function deleteUser(User $user):Response
     {
         $this->entityManager->remove($user);

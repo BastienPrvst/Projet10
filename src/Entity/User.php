@@ -7,10 +7,14 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
+use phpDocumentor\Reflection\Types\This;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`User`')]
-class User
+class User implements \Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface,
+    UserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -27,16 +31,17 @@ class User
     private ?string $email = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $role = null;
+    private ?string $employeRole = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $contract = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $entry_date = null;
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Gedmo\Timestampable(on: 'create')]
+    private \DateTimeInterface $entry_date;
 
     #[ORM\Column]
-    private ?bool $active = null;
+    private ?bool $active = false;
 
     /**
      * @var Collection<int, Task>
@@ -55,6 +60,12 @@ class User
      */
     #[ORM\OneToMany(targetEntity: Timeslot::class, mappedBy: 'userId')]
     private Collection $timeslots;
+
+    #[ORM\Column(length: 255)]
+    private ?string $password = null;
+
+    #[ORM\Column(type: Types::JSON, nullable: true)]
+    private ?array $roles = null;
 
     public function __construct()
     {
@@ -104,14 +115,14 @@ class User
         return $this;
     }
 
-    public function getRole(): ?string
+    public function getEmployeRole(): ?string
     {
-        return $this->role;
+        return $this->employeRole;
     }
 
-    public function setRole(?string $role): static
+    public function setEmployeRole(?string $employeRole): static
     {
-        $this->role = $role;
+        $this->employeRole = $employeRole;
 
         return $this;
     }
@@ -128,16 +139,16 @@ class User
         return $this;
     }
 
-    public function getEntryDate(): ?\DateTimeInterface
-    {
-        return $this->entry_date;
-    }
-
     public function setEntryDate(\DateTimeInterface $entry_date): static
     {
         $this->entry_date = $entry_date;
 
         return $this;
+    }
+
+    public function getEntryDate(): ?\DateTimeInterface
+    {
+        return $this->entry_date;
     }
 
     public function isActive(): ?bool
@@ -238,4 +249,42 @@ class User
 
         return $this;
     }
+
+    public function getPassword(): ?string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(string $password): static
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    public function setRoles(?array $roles): static
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    public function eraseCredentials(): void
+    {
+        // TODO: Implement eraseCredentials() method.
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return $this->getEmail();
+    }
+
 }
